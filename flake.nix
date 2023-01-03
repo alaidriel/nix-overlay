@@ -15,6 +15,7 @@
     {
       overlay = final: prev: {
         etherea = pkgs.callPackage ./pkgs/etherea.nix { inherit pkgs; };
+        athena = pkgs.callPackage ./pkgs/athena.nix { inherit pkgs; };
       };
     };
 }
