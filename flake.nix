@@ -7,6 +7,14 @@
   };
 
   outputs = { self, nixpkgs, flake-utils, ... }:
+    let
+      genPkgs = pkgs: with pkgs; lib.genAttrs
+        (builtins.map (x: lib.removeSuffix ".nix" x)
+          (builtins.map
+            (x: lib.removePrefix (toString ./pkgs + "/") (toString x))
+            (lib.filesystem.listFilesRecursive ./pkgs)))
+        (name: pkgs.callPackage ./pkgs/${name}.nix { inherit pkgs; });
+    in
     flake-utils.lib.eachDefaultSystem
       (system: {
         packages =
@@ -15,15 +23,8 @@
               inherit system;
             };
           in
-          {
-            etherea = pkgs.callPackage ./pkgs/etherea.nix { inherit pkgs; };
-            athena = pkgs.callPackage ./pkgs/athena.nix { inherit pkgs; };
-          };
+          genPkgs pkgs;
       }) // {
-      overlays.default = final: prev:
-        let pkgs = prev; in {
-          etherea = pkgs.callPackage ./pkgs/etherea.nix { inherit pkgs; };
-          athena = pkgs.callPackage ./pkgs/athena.nix { inherit pkgs; };
-        };
+      overlays.default = final: prev: genPkgs prev;
     };
 }
