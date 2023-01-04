@@ -1,24 +1,19 @@
-{ pkgs, ... }:
+{ pkgs, lib, stdenv, fetchFromGitHub, rustPlatform, ... }:
 
-with pkgs;
-
-stdenv.mkDerivation {
+rustPlatform.buildRustPackage rec {
   pname = "etherea";
   version = "0.2.3";
 
   src = fetchFromGitHub {
     owner = "alaidriel";
-    repo = "etherea";
-    rev = "5f0df4094055a783b35ffcbd514eff4dd1407155";
-    sha256 = "sha256-Ydqfl0SkfhwjQKIsM22MNgY14L9jlJkZzXJyjX4rVGg=";
+    repo = pname;
+    rev = "b1baa9f44632f2ac907f26e099898bd6ec4e0b71";
+    sha256 = "sha256-jLS7PmMYxTXa9IN7V4VpE6Z0+fLyhpHN3AYuJZCSMjo=";
   };
 
-  buildInputs = [
-    rustc
-    cargo
-  ] ++ lib.optionals stdenv.isDarwin (
+  buildInputs = [ ] ++ lib.optionals stdenv.isDarwin (
     with pkgs.darwin.apple_sdk; [
-      darwin.libobjc
+      pkgs.darwin.libobjc
       frameworks.ApplicationServices
       frameworks.CoreVideo
       frameworks.AppKit
@@ -30,12 +25,7 @@ stdenv.mkDerivation {
     ]
   );
 
-  buildPhase = ''
-    cargo build --release
-  '';
-
-  installPhase = ''
-    mkdir -p $out/bin
-    cp ./target/release/etherea $out/bin
-  '';
+  cargoLock = {
+    lockFile = "${src}/Cargo.lock";
+  };
 }
