@@ -1,10 +1,11 @@
 name: "Build"
 on:
-  pull_request:
   push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 jobs:
   build:
-    name: Build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -14,6 +15,7 @@ jobs:
     - uses: cachix/install-nix-action@v18
       with:
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
-    - run: |
-        export PLATFORM="$(nix eval --impure --raw --expr 'builtins.currentSystem')"
-        nix flake show --json | jq  ".packages.\"$PLATFORM\"|keys[]"| xargs -I {} nix build .#{}
+    - name: Get system
+      run: export PLATFORM="$(nix eval --impure --raw --expr 'builtins.currentSystem')"
+    - name: Build packages
+      run: nix flake show --json | jq  ".packages.\"$PLATFORM\"|keys[]"| xargs -I {} nix build .#{}
