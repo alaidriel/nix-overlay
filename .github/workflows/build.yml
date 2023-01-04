@@ -1,4 +1,4 @@
-name: "Build"
+name: "Nix"
 on:
   push:
     branches: [ "main" ]
@@ -15,7 +15,10 @@ jobs:
     - uses: cachix/install-nix-action@v18
       with:
         github_access_token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Get system
-      run: export PLATFORM="$(nix eval --impure --raw --expr 'builtins.currentSystem')"
     - name: Build packages
-      run: nix flake show --json | jq  ".packages.\"$PLATFORM\"|keys[]"| xargs -I {} nix build .#{}
+      run: |
+        set -o pipefail
+        echo $(nix eval --impure --raw --expr 'builtins.currentSystem')
+        echo echo $(nix flake show --json)
+        export PLATFORM="$(nix eval --impure --raw --expr 'builtins.currentSystem')"
+        nix flake show --json | jq  ".packages.\"$PLATFORM\"|keys[]"| xargs -I {} nix build .#{}
