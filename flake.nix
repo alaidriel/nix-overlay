@@ -1,5 +1,5 @@
 {
-  description = "A Nix overlay for my personal projects";
+  description = "A Nix flake for my personal projects and custom builds of packages";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";

@@ -1,6 +1,6 @@
 # nix-overlay
 
-A Nix overlay for my personal projects! Packaged for macOS, so some dependencies might be missing if building on Linux.
+A Nix flake for my personal projects and custom builds of packages
 
 ## Usage
 
@@ -10,4 +10,4 @@ A Nix overlay for my personal projects! Packaged for macOS, so some dependencies
  {
    inputs.personal.url = "github:alaidriel/nix-overlay";
  }
- ```
+```
