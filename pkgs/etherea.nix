@@ -28,4 +28,8 @@ rustPlatform.buildRustPackage rec {
   cargoLock = {
     lockFile = "${src}/Cargo.lock";
   };
+
+  meta = with lib; {
+    platforms = platforms.darwin;
+  };
 }
