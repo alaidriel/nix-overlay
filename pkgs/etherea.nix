@@ -1,5 +1,11 @@
-{ pkgs, lib, stdenv, fetchFromGitHub, rustPlatform, ... }:
-
+{
+  pkgs,
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  rustPlatform,
+  ...
+}:
 rustPlatform.buildRustPackage rec {
   pname = "etherea";
   version = "0.2.3";
@@ -11,19 +17,21 @@ rustPlatform.buildRustPackage rec {
     sha256 = "sha256-jLS7PmMYxTXa9IN7V4VpE6Z0+fLyhpHN3AYuJZCSMjo=";
   };
 
-  buildInputs = [ ] ++ lib.optionals stdenv.isDarwin (
-    with pkgs.darwin.apple_sdk; [
-      pkgs.darwin.libobjc
-      frameworks.ApplicationServices
-      frameworks.CoreVideo
-      frameworks.AppKit
-      frameworks.QuartzCore
-      frameworks.Foundation
-      frameworks.CoreGraphics
-      frameworks.CoreFoundation
-      frameworks.Metal
-    ]
-  );
+  buildInputs =
+    []
+    ++ lib.optionals stdenv.isDarwin (
+      with pkgs.darwin.apple_sdk; [
+        pkgs.darwin.libobjc
+        frameworks.ApplicationServices
+        frameworks.CoreVideo
+        frameworks.AppKit
+        frameworks.QuartzCore
+        frameworks.Foundation
+        frameworks.CoreGraphics
+        frameworks.CoreFoundation
+        frameworks.Metal
+      ]
+    );
 
   cargoLock = {
     lockFile = "${src}/Cargo.lock";

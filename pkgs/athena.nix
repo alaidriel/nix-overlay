@@ -1,5 +1,11 @@
-{ pkgs, lib, stdenv, fetchFromGitHub, rustPlatform, ... }:
-
+{
+  pkgs,
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  rustPlatform,
+  ...
+}:
 rustPlatform.buildRustPackage rec {
   pname = "athena";
   version = "0.1.0";
@@ -11,12 +17,14 @@ rustPlatform.buildRustPackage rec {
     sha256 = "sha256-RUDIxSWH/yU8rp7Cie3f3/4b/jIWZs+UpZeQXWTFJeU=";
   };
 
-  buildInputs = [ ] ++ lib.optionals stdenv.isDarwin (
-    with pkgs.darwin.apple_sdk; [
-      frameworks.Security
-      frameworks.CoreFoundation
-    ]
-  );
+  buildInputs =
+    []
+    ++ lib.optionals stdenv.isDarwin (
+      with pkgs.darwin.apple_sdk; [
+        frameworks.Security
+        frameworks.CoreFoundation
+      ]
+    );
 
   cargoLock = {
     lockFile = "${src}/Cargo.lock";
