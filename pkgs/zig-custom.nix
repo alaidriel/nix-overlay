@@ -5,7 +5,7 @@
   ...
 }: let
   arch = "aarch64";
-  sha256 = "14wi1il7rirl2097m2sywslnkn1sysx2gfj69zs6wk1s4n1jjn8f";
+  sha256 = "0lbwgac61wvb5hi7s3f8hc2lgqh9wha1bp199gramwaik6shnn27";
   version = "0.12.0-dev.2543+9eda6ccef";
 in
   stdenv.mkDerivation {
