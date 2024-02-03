@@ -1,11 +1,16 @@
 {
-  pkgs,
-  lib,
   stdenv,
+  lib,
   ...
 }: let
-  arch = "aarch64";
-  sha256 = "0lbwgac61wvb5hi7s3f8hc2lgqh9wha1bp199gramwaik6shnn27";
+  arch =
+    if stdenv.isAarch64
+    then "aarch64"
+    else "x86_64";
+  sha256 =
+    if stdenv.isAarch64
+    then "0lbwgac61wvb5hi7s3f8hc2lgqh9wha1bp199gramwaik6shnn27"
+    else "5fb672a68f9461d7e1a815fb530ff4c4705989cbccf12d9b8b25a719dba7a385";
   version = "0.12.0-dev.2543+9eda6ccef";
 in
   stdenv.mkDerivation {
@@ -26,6 +31,6 @@ in
     '';
 
     meta = {
-      platforms = ["${arch}-darwin"];
+      platforms = lib.platforms.darwin;
     };
   }
